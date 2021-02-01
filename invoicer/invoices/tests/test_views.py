@@ -87,6 +87,7 @@ class TestPaymentTypeView:
             ("amount", None),
             ("currency", "INV"),
             ("currency", None),
+            ("currency", ""),
         ),
     )
     def test_invalid_payment(self, client, corrupted_field, corrupted_value):
@@ -99,4 +100,5 @@ class TestPaymentTypeView:
         }
         response = client.post(reverse("payment_types-pay"), data=data, format="json")
         assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert len(response.data) == 1
         assert corrupted_field in response.data
